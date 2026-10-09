@@ -36,7 +36,7 @@ public class Fourmis {
 	}
 
 	/**
-	 * @param n indec de la suite
+	 * @param n indice de la suite
 	 * @return n-ième élément de la suite des fourmis
 	 */
 	public static String generate(int n) {
@@ -46,6 +46,14 @@ public class Fourmis {
 		}
 
 		return result;
+	}
+
+	public static void main(String[] args) {
+		int n = 10;
+		System.out.println("Le 0ème terme de la suite des fourmis est : 1");
+		for (int i = 1; i <= n; i++) {
+			System.out.println("Le " + i + "ème terme de la suite des fourmis est : " + Fourmis.generate(i));
+		}
 	}
 
 }
