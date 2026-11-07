@@ -1,4 +1,5 @@
-# Utiliser l'image PHP 8.1-FPM comme base
+
+# Utiliser PHP 8.1-FPM
 FROM php:8.1-fpm
 
 # Installer les dépendances nécessaires
@@ -10,7 +11,9 @@ RUN apt-get update && apt-get install -y \
 
 # Installer Symfony CLI
 RUN curl -sS https://get.symfony.com/cli/installer | bash && \
-    mv ~/.symfony*/bin/symfony /usr/local/bin/symfony
+    mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
 
 # Installer Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin –filename=composer
+RUN curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php \
+    && php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+    && rm /tmp/composer-setup.php

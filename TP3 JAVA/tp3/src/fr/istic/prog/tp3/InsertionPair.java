@@ -58,17 +58,20 @@ public class InsertionPair {
 	 */
 	public void createArray(Scanner scanner) {
 		// Lecture via Scanner avec un fichier de test ou via le clavier
-		
-		while (true) {
+
+		boolean done = false;
+		while (!done) {
 			int val1 = scanner.nextInt();
 			if (val1 == END_MARKER) {
-				break;
+				done = true;
+			} else {
+				int val2 = scanner.nextInt();
+				if (val2 == END_MARKER) {
+					done = true;
+				} else {
+					insert(new Pair(val1, val2));
+				}
 			}
-			int val2 = scanner.nextInt();
-			if (val2 == END_MARKER) {
-				break;
-			}
-			insert(new Pair(val1, val2));
 		}
 	}
 
@@ -89,7 +92,7 @@ public class InsertionPair {
 			return false;
 		}
 		int index = 0;
-		while (index < size && array[index].compareTo(pair) == -1) {
+		while (index < size && array[index].compareTo(pair) <= -1) {
 			index++;
 		}
 		if (index < size && array[index].compareTo(pair) == 0) {
@@ -105,10 +108,10 @@ public class InsertionPair {
 
 	@Override
 	public String toString() {
-		String result = "";
+		StringBuilder result = new StringBuilder();
 		for (int i = 0; i < size; i++) {
-			result = result + array[i] + " ";
+			result = result.append(array[i]);
 		}
-		return result;
+		return result.toString();
 	}
 }

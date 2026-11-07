@@ -48,7 +48,7 @@ public class Fourmis {
 		return result;
 	}
 
-	public static void main(String[] args) {
+	public static void main() {
 		int n = 10;
 		System.out.println("Le 0ème terme de la suite des fourmis est : 1");
 		for (int i = 1; i <= n; i++) {

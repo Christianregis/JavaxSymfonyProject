@@ -41,7 +41,8 @@ public class InsertionInteger {
 	public int[] toArray() {
 		int[] result = new int[size];
 		for (int i = 0; i < size; i++) {
-			result[i] = array[i];
+			int v = array[i];
+			result[i] = v;
 		}
 		return result;
 	}
@@ -105,10 +106,10 @@ public class InsertionInteger {
 
 	@Override
 	public String toString() {
-		String result = "";
+		StringBuilder result = new StringBuilder();
 		for (int i = 0; i < size; i++) {
-			result = result + array[i] + " ";
+			result.append(array[i]);
 		}
-		return result;
+		return result.toString();
 	}
 }

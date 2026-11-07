@@ -54,7 +54,7 @@ public class Pair implements Comparable<Pair> {
 		return x == ((Pair) obj).x && y == ((Pair) obj).y;
 	}
 
-	public static void main(String[] args) {
+	public static void main() {
 		Pair p1 = new Pair(2, 2);
 		Pair p2 = p1;
 		System.out.println(p1.compareTo(p2));

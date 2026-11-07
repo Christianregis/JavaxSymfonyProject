@@ -1,0 +1,6 @@
+{
+    "require": {
+        "twig/twig": "^3.30",
+        "symfony/asset": "^6.4"
+    }
+}
