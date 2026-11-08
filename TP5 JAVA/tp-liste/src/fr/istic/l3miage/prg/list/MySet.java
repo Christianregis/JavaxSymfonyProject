@@ -15,7 +15,7 @@ import fr.istic.l3miage.prg.list_util.List;
 import fr.istic.l3miage.prg.list_util.SmallSet;
 
 /**
- * @author Mickaël Foursov <foursov@univ-rennes.fr>
+ * @author CHEUKAP CHRISTIAN REGIS et ENZO LEBAS
  * @version 4.1
  * @since 2023-10-11
  */
@@ -90,11 +90,13 @@ public class MySet extends List<SubSet> {
 	 */
 
 	public boolean containsValue(int value) {
-		System.out.println("------------------------------------------");
-		System.out.println("------------------------------------------");
-		System.out.println("---------- fonction à écrire -------------");
-		System.out.println("------------------------------------------");
-		System.out.println("------------------------------------------");
+		Iterator<SubSet> it = this.iterator();
+		while (!it.isOnFlag()) {
+			if (it.getValue().rank == value / 256 && it.getValue().set.contains(value % 256)) {
+				return true;
+			}
+			it.goForward();
+		}
 		return false;
 	}
 
@@ -114,11 +116,11 @@ public class MySet extends List<SubSet> {
 	 * @param is flux d'entrée.
 	 */
 	public void addAllFromStream(InputStream is) {
-		System.out.println("------------------------------------------");
-		System.out.println("------------------------------------------");
-		System.out.println("---------- fonction à écrire -------------");
-		System.out.println("------------------------------------------");
-		System.out.println("------------------------------------------");
+		int value = readValue(STANDARD_INPUT, -1);
+		while (value != -1) {
+			this.addNumber(value);
+			value = readValue(STANDARD_INPUT, -1);
+		}
 	}
 
 	/**
@@ -127,11 +129,19 @@ public class MySet extends List<SubSet> {
 	 * @param element valuer à ajouter.
 	 */
 	public void addNumber(int value) {
-		System.out.println("------------------------------------------");
-		System.out.println("------------------------------------------");
-		System.out.println("---------- fonction à écrire -------------");
-		System.out.println("------------------------------------------");
-		System.out.println("------------------------------------------");
+		Iterator<SubSet> it = this.iterator();
+
+		while (!it.isOnFlag() && it.getValue().rank < value / 256) {
+			it.goForward();
+		}
+		if (!it.isOnFlag() && it.getValue().rank == value / 256) {
+			it.getValue().set.add(value % 256);
+		}
+		if (!it.isOnFlag() && it.getValue().rank > value / 256) {
+			SubSet newSubSet = new SubSet(value / 256, new SmallSet());
+			newSubSet.set.add(value % 256);
+			it.addLeft(newSubSet);
+		}
 	}
 
 	/**
@@ -150,11 +160,11 @@ public class MySet extends List<SubSet> {
 	 * @param is flux d'entrée
 	 */
 	public void removeAllFromStream(InputStream is) {
-		System.out.println("------------------------------------------");
-		System.out.println("------------------------------------------");
-		System.out.println("---------- fonction à écrire -------------");
-		System.out.println("------------------------------------------");
-		System.out.println("------------------------------------------");
+		int valeur = readValue(STANDARD_INPUT, -1);
+		while (valeur != -1) {
+			this.removeNumber(valeur);
+			valeur = readValue(STANDARD_INPUT, -1);
+		}
 	}
 
 	/**
@@ -163,23 +173,26 @@ public class MySet extends List<SubSet> {
 	 * @param element valeur à supprimer
 	 */
 	public void removeNumber(int value) {
-		System.out.println("------------------------------------------");
-		System.out.println("------------------------------------------");
-		System.out.println("---------- fonction à écrire -------------");
-		System.out.println("------------------------------------------");
-		System.out.println("------------------------------------------");
+		Iterator<SubSet> it = this.iterator();
+		while (!it.isOnFlag() && it.getValue().rank < value / 256) {
+			it.goForward();
+		}
+		if (!it.isOnFlag() && it.getValue().rank == value / 256) {
+			it.getValue().set.remove(value);
+		}
 	}
 
 	/**
 	 * @return taille de l'ensemble this
 	 */
 	public int size() {
-		System.out.println("------------------------------------------");
-		System.out.println("------------------------------------------");
-		System.out.println("---------- fonction à écrire -------------");
-		System.out.println("------------------------------------------");
-		System.out.println("------------------------------------------");
-		return -1;
+		Iterator<SubSet> it = this.iterator();
+		int count = 0;
+		while (!it.isOnFlag()) {
+			count = count + it.getValue().set.size();
+			it.goForward();
+		}
+		return count == 0 ? -1 : count;
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////
@@ -257,11 +270,10 @@ public class MySet extends List<SubSet> {
 		} else if (!(o instanceof MySet)) {
 			b = false;
 		} else {
-			System.out.println("------------------------------------------");
-			System.out.println("------------------------------------------");
-			System.out.println("---------- fonction à écrire -------------");
-			System.out.println("------------------------------------------");
-			System.out.println("------------------------------------------");
+			MySet no = (MySet) o;
+			Iterator<SubSet> it1 = this.iterator();
+			Iterator<SubSet> it2 = no.iterator();
+
 			b = false;
 		}
 		return b;
