@@ -273,8 +273,14 @@ public class MySet extends List<SubSet> {
 			MySet no = (MySet) o;
 			Iterator<SubSet> it1 = this.iterator();
 			Iterator<SubSet> it2 = no.iterator();
-
-			b = false;
+			while (!it1.isOnFlag() && !it2.isOnFlag()) {
+				if ((it1.getValue().rank != it2.getValue().rank) || (!it1.getValue().set.equals(it2.getValue().set))) {
+					return false;
+				}
+				it1.goForward();
+				it2.goForward();
+			}
+			return it1.isOnFlag() && it2.isOnFlag();
 		}
 		return b;
 	}
