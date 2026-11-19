@@ -161,10 +161,11 @@ public class MySet extends List<SubSet> {
 	 * @param is flux d'entrée
 	 */
 	public void removeAllFromStream(InputStream is) {
-		int valeur = readValue(STANDARD_INPUT, -1);
+		Scanner scanner = new Scanner(is);
+		int valeur = readValue(scanner, -1);
 		while (valeur != -1) {
 			this.removeNumber(valeur);
-			valeur = readValue(STANDARD_INPUT, -1);
+			valeur = readValue(scanner, -1);
 		}
 	}
 
@@ -179,7 +180,8 @@ public class MySet extends List<SubSet> {
 			it.goForward();
 		}
 		if (!it.isOnFlag() && it.getValue().rank == value / 256) {
-			it.getValue().set.remove(value);
+			it.getValue().set.remove(value % 256);
+			it.remove();
 		}
 	}
 
