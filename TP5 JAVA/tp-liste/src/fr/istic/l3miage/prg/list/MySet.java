@@ -212,7 +212,11 @@ public class MySet extends List<SubSet> {
 	public void difference(MySet set2) {
 		Iterator<SubSet> it1 = this.iterator();
 		Iterator<SubSet> it2 = set2.iterator();
-
+		// if (it1.getValue().equals(it2.getValue())) {
+		// 	while (!it1.isOnFlag() && !it2.isOnFlag()) {
+		// 		it1.remove();
+		// 	}
+		// }
 		while (!it1.isOnFlag() && !it2.isOnFlag()) {
 			if (it1.getValue().rank == it2.getValue().rank) {
 				it1.getValue().set.difference(it2.getValue().set);
@@ -237,11 +241,28 @@ public class MySet extends List<SubSet> {
 	 * @param set2 deuxième ensemble
 	 */
 	public void symmetricDifference(MySet set2) {
-		System.out.println("------------------------------------------");
-		System.out.println("------------------------------------------");
-		System.out.println("---------- fonction à écrire -------------");
-		System.out.println("------------------------------------------");
-		System.out.println("------------------------------------------");
+		Iterator<SubSet> it1 = this.iterator();
+		Iterator<SubSet> it2 = set2.iterator();
+		while (!it1.isOnFlag() && !it2.isOnFlag()) {
+			if (it1.getValue().rank == it2.getValue().rank) {
+				it1.getValue().set.symmetricDifference(it2.getValue().set);
+				if (it1.getValue().set.isEmpty()) {
+					it1.remove();
+				} else {
+					it2.goForward();
+					it1.goForward();
+				}
+			} else if (it1.getValue().rank < it2.getValue().rank) {
+				it1.goForward();
+			} else {
+				it2.goForward();
+			}
+		}
+		while (!it2.isOnFlag()) {
+			SubSet newSubSet = new SubSet(it2.getValue().rank, it2.getValue().set.copyOf());
+			it1.addLeft(newSubSet);
+			it2.goForward();
+		}
 	}
 
 	/**
@@ -275,11 +296,27 @@ public class MySet extends List<SubSet> {
 	 * @param set2 deuxième ensemble
 	 */
 	public void union(MySet set2) {
-		System.out.println("------------------------------------------");
-		System.out.println("------------------------------------------");
-		System.out.println("---------- fonction à écrire -------------");
-		System.out.println("------------------------------------------");
-		System.out.println("------------------------------------------");
+		if (this.equals(set2)) {
+			return;
+		}
+		Iterator<SubSet> it1 = this.iterator();
+		Iterator<SubSet> it2 = set2.iterator();
+		while(!it1.isOnFlag() && !it2.isOnFlag()){
+			if(it1.getValue().rank == it2.getValue().rank){
+				it1.getValue().set.union(it2.getValue().set);
+				it1.goForward();
+				it2.goForward();
+			}else if(it1.getValue().rank > it2.getValue().rank){
+				it1.addLeft(it2.getValue().copyOf());
+				it2.goForward();
+			}else{
+				it1.goForward();
+			}
+		}
+		while(!it2.isOnFlag()){
+			it1.addLeft(it2.getValue().copyOf());
+			it2.goForward();
+		}
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////
