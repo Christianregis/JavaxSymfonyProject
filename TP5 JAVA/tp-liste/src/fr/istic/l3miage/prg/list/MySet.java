@@ -181,6 +181,8 @@ public class MySet extends List<SubSet> {
 		}
 		if (!it.isOnFlag() && it.getValue().rank == value / 256) {
 			it.getValue().set.remove(value % 256);
+		}
+		if (!it.isOnFlag() && it.getValue().set.isEmpty()) {
 			it.remove();
 		}
 	}
@@ -208,11 +210,25 @@ public class MySet extends List<SubSet> {
 	 * @param set2 deuxième ensemble
 	 */
 	public void difference(MySet set2) {
-		System.out.println("------------------------------------------");
-		System.out.println("------------------------------------------");
-		System.out.println("---------- fonction à écrire -------------");
-		System.out.println("------------------------------------------");
-		System.out.println("------------------------------------------");
+		Iterator<SubSet> it1 = this.iterator();
+		Iterator<SubSet> it2 = set2.iterator();
+
+		while (!it1.isOnFlag() && !it2.isOnFlag()) {
+			if (it1.getValue().rank == it2.getValue().rank) {
+				it1.getValue().set.difference(it2.getValue().set);
+				if (it1.getValue().set.isEmpty()) {
+					it1.remove();
+				} else {
+					it2.goForward();
+					it1.goForward();
+				}
+
+			} else if (it1.getValue().rank < it2.getValue().rank) {
+				it1.goForward();
+			} else {
+				it2.goForward();
+			}
+		}
 	}
 
 	/**
@@ -234,11 +250,23 @@ public class MySet extends List<SubSet> {
 	 * @param set2 deuxième ensemble
 	 */
 	public void intersection(MySet set2) {
-		System.out.println("------------------------------------------");
-		System.out.println("------------------------------------------");
-		System.out.println("---------- fonction à écrire -------------");
-		System.out.println("------------------------------------------");
-		System.out.println("------------------------------------------");
+		if (this.equals(set2)) {
+			return;
+		}
+		Iterator<SubSet> it1 = this.iterator();
+		Iterator<SubSet> it2 = set2.iterator();
+		while (!it1.isOnFlag() && !it2.isOnFlag()) {
+			if (it1.getValue().rank < it2.getValue().rank) {
+				it1.remove();
+			} else if (it1.getValue().rank > it2.getValue().rank) {
+				it2.goForward();
+			} else if (it1.getValue().rank == it2.getValue().rank) {
+				it1.getValue().set.intersection(it2.getValue().set);
+			} else {
+				it1.goForward();
+				it2.goForward();
+			}
+		}
 	}
 
 	/**
