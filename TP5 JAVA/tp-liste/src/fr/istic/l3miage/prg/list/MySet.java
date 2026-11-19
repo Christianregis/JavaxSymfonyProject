@@ -116,10 +116,11 @@ public class MySet extends List<SubSet> {
 	 * @param is flux d'entrée.
 	 */
 	public void addAllFromStream(InputStream is) {
-		int value = readValue(STANDARD_INPUT, -1);
+		Scanner scanner = new Scanner(is);
+		int value = readValue(scanner, -1);
 		while (value != -1) {
 			this.addNumber(value);
-			value = readValue(STANDARD_INPUT, -1);
+			value = readValue(scanner, -1);
 		}
 	}
 
@@ -137,7 +138,7 @@ public class MySet extends List<SubSet> {
 		if (!it.isOnFlag() && it.getValue().rank == value / 256) {
 			it.getValue().set.add(value % 256);
 		}
-		if (!it.isOnFlag() && it.getValue().rank > value / 256) {
+		if (it.isOnFlag() || it.getValue().rank > value / 256) {
 			SubSet newSubSet = new SubSet(value / 256, new SmallSet());
 			newSubSet.set.add(value % 256);
 			it.addLeft(newSubSet);
