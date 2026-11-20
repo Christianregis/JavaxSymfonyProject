@@ -210,23 +210,28 @@ public class MySet extends List<SubSet> {
 	 * @param set2 deuxième ensemble
 	 */
 	public void difference(MySet set2) {
-		Iterator<SubSet> it1 = this.iterator();
-		Iterator<SubSet> it2 = set2.iterator();
-		while (!it1.isOnFlag() && !it2.isOnFlag()) {
-			if (it1.getValue().rank == it2.getValue().rank) {
-				it1.getValue().set.difference(it2.getValue().set);
-				if (it1.getValue().set.isEmpty()) {
-					it1.remove();
-				} else {
+		if (this == set2) {
+			this.clear();
+		} else {
+			Iterator<SubSet> it1 = this.iterator();
+			Iterator<SubSet> it2 = set2.iterator();
+			while (!it1.isOnFlag() && !it2.isOnFlag()) {
+				if (it1.getValue().rank == it2.getValue().rank) {
+					it1.getValue().set.difference(it2.getValue().set);
+					if (it1.getValue().set.isEmpty()) {
+						it1.remove();
+					} else {
+						it1.goForward();
+					}
+					it2.goForward();
+				} else if (it1.getValue().rank < it2.getValue().rank) {
 					it1.goForward();
+				} else {
+					it2.goForward();
 				}
-				it2.goForward();
-			} else if (it1.getValue().rank < it2.getValue().rank) {
-				it1.goForward();
-			} else {
-				it2.goForward();
 			}
 		}
+
 	}
 
 	/**
@@ -235,29 +240,35 @@ public class MySet extends List<SubSet> {
 	 * @param set2 deuxième ensemble
 	 */
 	public void symmetricDifference(MySet set2) {
-		Iterator<SubSet> it1 = this.iterator();
-		Iterator<SubSet> it2 = set2.iterator();
-		while (!it1.isOnFlag() && !it2.isOnFlag()) {
-			if (it1.getValue().rank == it2.getValue().rank) {
-				it1.getValue().set.symmetricDifference(it2.getValue().set);
-				if (it1.getValue().set.isEmpty()) {
-					it1.remove();
-				} else {
+		
+		if (this == set2) {
+			this.clear();
+		} else {
+			Iterator<SubSet> it1 = this.iterator();
+			Iterator<SubSet> it2 = set2.iterator();
+			while (!it1.isOnFlag() && !it2.isOnFlag()) {
+				if (it1.getValue().rank == it2.getValue().rank) {
+					it1.getValue().set.symmetricDifference(it2.getValue().set);
+					if (it1.getValue().set.isEmpty()) {
+						it1.remove();
+					} else {
+						it1.goForward();
+					}
+					it2.goForward();
+				} else if (it1.getValue().rank < it2.getValue().rank) {
 					it1.goForward();
+				} else {
+					it1.addLeft(it2.getValue().copyOf());
+					it2.goForward();
 				}
-				it2.goForward();
-			} else if (it1.getValue().rank < it2.getValue().rank) {
-				it1.goForward();
-			} else {
+			}
+			while (!it2.isOnFlag()) {
 				it1.addLeft(it2.getValue().copyOf());
+				it1.goForward();
 				it2.goForward();
 			}
 		}
-		while (!it2.isOnFlag()) {
-			it1.addLeft(it2.getValue().copyOf());
-			it1.goForward();
-			it2.goForward();
-		}
+
 	}
 
 	/**
